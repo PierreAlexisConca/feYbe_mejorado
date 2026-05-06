@@ -1,0 +1,56 @@
+<div class="products-container">
+
+  <div class="title-section">
+    <div>
+      <h2>Productos</h2>
+      <p>Gestión de inventario agrícola</p>
+      <div *ngIf="mensaje" class="toast" [class.toast-error]="tipoMensaje === 'error'">{{ mensaje }}</div>
+    </div>
+    <div class="action-buttons">
+      <button class="add-btn" (click)="toggleForm()">
+        {{ showForm ? 'Cancelar' : '+ Agregar producto' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <input [(ngModel)]="newProduct.nombre" placeholder="Nombre del producto">
+    <input [(ngModel)]="newProduct.descripcion" placeholder="Descripción">
+    <input [(ngModel)]="newProduct.precio" type="number" placeholder="Precio">
+
+    <button class="save-btn" (click)="guardar()">
+      {{ editando ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+
+  <div class="search-section">
+    <input [(ngModel)]="searchText" placeholder="Buscar producto...">
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let product of filtrados">
+        <td>{{ product.nombre }}</td>
+        <td>{{ product.descripcion }}</td>
+        <td>S/. {{ product.precio }}</td>
+        <td>{{ product.state === 'A' ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <button class="edit-btn" (click)="editar(product)">Editar</button>
+          <button class="delete-btn" *ngIf="product.state === 'A'" (click)="eliminar(product)">Eliminar</button>
+          <button class="restore-btn" *ngIf="product.state !== 'A'" (click)="restaurar(product)">Restaurar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

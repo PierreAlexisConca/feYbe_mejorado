@@ -1,0 +1,136 @@
+.dashboard-container {
+  padding: 30px 40px;
+}
+
+.dashboard-header {
+  background: linear-gradient(135deg, #1b5e20, #43a047, #66bb6a);
+  padding: 30px;
+  border-radius: 24px;
+  color: white;
+  margin-bottom: 30px;
+  box-shadow: 0 20px 40px rgba(46,125,50,0.18);
+}
+
+.dashboard-header h2 {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-bottom: 35px;
+}
+
+.stat-card {
+  padding: 28px;
+  border-radius: 22px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 16px 30px rgba(0,0,0,0.08);
+}
+
+.stat-card:nth-child(1) {
+  background: linear-gradient(135deg, #43a047, #66bb6a);
+}
+
+.stat-card:nth-child(2) {
+  background: linear-gradient(135deg, #1565c0, #42a5f5);
+}
+
+.stat-card:nth-child(3) {
+  background: linear-gradient(135deg, #8e24aa, #ba68c8);
+}
+
+.stat-card:nth-child(4) {
+  background: linear-gradient(135deg, #ef6c00, #ffb74d);
+}
+
+.stat-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 24px 40px rgba(0,0,0,0.14);
+}
+
+.stat-card h3 {
+  font-size: 15px;
+  margin-bottom: 12px;
+  opacity: 0.95;
+}
+
+.stat-card h2 {
+  font-size: 30px;
+  font-weight: 800;
+  text-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+.recent-section {
+  background: white;
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.06);
+}
+.dashboard-container {
+  padding: 30px 40px;
+}
+
+.dashboard-header {
+  background: linear-gradient(135deg, #1b5e20, #43a047, #66bb6a);
+  padding: 30px;
+  border-radius: 24px;
+  color: white;
+  margin-bottom: 30px;
+  box-shadow: 0 20px 40px rgba(46,125,50,0.18);
+}
+
+.dashboard-header h2 {
+  font-size: 34px;
+  font-weight: 800;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-bottom: 35px;
+}
+
+.stat-card {
+  padding: 28px;
+  border-radius: 22px;
+  color: white;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.stat-card:nth-child(1) {
+  background: linear-gradient(135deg, #43a047, #66bb6a);
+}
+
+.stat-card:nth-child(2) {
+  background: linear-gradient(135deg, #1565c0, #42a5f5);
+}
+
+.stat-card:nth-child(3) {
+  background: linear-gradient(135deg, #8e24aa, #ba68c8);
+}
+
+.stat-card:nth-child(4) {
+  background: linear-gradient(135deg, #ef6c00, #ffb74d);
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 40px rgba(0,0,0,0.12);
+}
+
+.recent-section {
+  background: white;
+  padding: 28px;
+  border-radius: 22px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}

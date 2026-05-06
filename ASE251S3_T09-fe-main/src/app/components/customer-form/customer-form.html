@@ -1,0 +1,122 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ cliente ? '✏️ Editar Cliente' : '➕ Nuevo Cliente' }}</h2>
+    <p class="form-subtitle">{{ cliente ? 'Actualiza los datos del cliente' : 'Ingresa los datos del nuevo cliente' }}</p>
+  </div>
+
+  <form (ngSubmit)="onSave()" class="customer-form">
+    <div class="form-section">
+      <h3>Información Personal</h3>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="dni">DNI *</label>
+          <input 
+            type="text" 
+            id="dni"
+            [(ngModel)]="formCliente.dni" 
+            name="dni" 
+            placeholder="Ej: 12345678"
+            required
+            maxlength="8">
+        </div>
+        <div class="form-group">
+          <label for="cellphone">Celular *</label>
+          <input 
+            type="text" 
+            id="cellphone"
+            [(ngModel)]="formCliente.cellphone" 
+            name="cellphone" 
+            placeholder="Ej: 987654321"
+            required
+            maxlength="9">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="first_name">Nombre *</label>
+          <input 
+            type="text" 
+            id="first_name"
+            [(ngModel)]="formCliente.nombre" 
+            name="nombre" 
+            placeholder="Ej: Juan"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="last_name">Apellido *</label>
+          <input 
+            type="text" 
+            id="last_name"
+            [(ngModel)]="formCliente.apellido" 
+            name="apellido" 
+            placeholder="Ej: Pérez"
+            required>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Datos de Contacto</h3>
+      
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email"
+            [(ngModel)]="formCliente.email" 
+            name="email"
+            placeholder="Ej: correo@ejemplo.com">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Información Adicional</h3>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="birth_date">Fecha de Nacimiento</label>
+          <input 
+            type="date" 
+            id="birth_date"
+            [(ngModel)]="formCliente.birth_date" 
+            name="birth_date">
+        </div>
+        <div class="form-group">
+          <label for="age">Edad</label>
+          <input 
+            type="number" 
+            id="age"
+            [(ngModel)]="formCliente.edad" 
+            name="edad"
+            placeholder="Ej: 25">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group checkbox-group">
+          <label for="is_active" class="checkbox-label">
+            <input 
+              type="checkbox" 
+              id="is_active"
+              [(ngModel)]="formCliente.activo" 
+              name="activo">
+            <span>Cliente Activo</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success">
+        <span>💾</span> {{ cliente ? 'Actualizar' : 'Guardar' }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">
+        <span>✕</span> Cancelar
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,58 @@
+<div class="customers-container">
+
+  <div class="title-section">
+    <div>
+      <h2>Clientes</h2>
+      <p>Gestión de clientes e historial de compras</p>
+      <div *ngIf="mensaje" class="toast" [class.toast-error]="tipoMensaje === 'error'">{{ mensaje }}</div>
+    </div>
+    <div class="action-buttons">
+      <button class="add-btn" (click)="toggleForm()">
+        {{ showForm ? 'Cancelar' : '+ Agregar cliente' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <input [(ngModel)]="newCustomer.nombre" placeholder="Nombre completo">
+    <input [(ngModel)]="newCustomer.email" placeholder="Correo">
+    <input [(ngModel)]="newCustomer.telefono" placeholder="Número">
+
+    <button class="save-btn" (click)="guardar()">
+      {{ editando ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+
+  <div class="search-section">
+    <input
+      [(ngModel)]="searchText"
+      placeholder="Buscar por nombre, correo o número..."
+    />
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Teléfono</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of filtrados">
+        <td>{{ customer.nombre }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.telefono }}</td>
+        <td>{{ customer.state === 'A' ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <button class="edit-btn" (click)="editar(customer)">Editar</button>
+          <button class="delete-btn" *ngIf="customer.state === 'A'" (click)="eliminar(customer)">Eliminar</button>
+          <button class="restore-btn" *ngIf="customer.state !== 'A'" (click)="restaurar(customer)">Restaurar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

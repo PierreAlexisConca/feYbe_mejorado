@@ -1,0 +1,40 @@
+<div class="dashboard-container">
+
+  <div class="dashboard-header">
+    <h2>Dashboard Principal</h2>
+    <p>Resumen general de AGRÍCOLA FLOREZA</p>
+  </div>
+
+  <div class="stats-grid">
+    <div
+      class="stat-card"
+      *ngFor="let item of stats"
+    >
+      <h3>{{ item.title }}</h3>
+      <h2>{{ item.value }}</h2>
+    </div>
+  </div>
+
+  <div class="recent-section">
+    <h3>Pedidos Recientes</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Producto</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let order of recentOrders">
+          <td>{{ order.client }}</td>
+          <td>{{ order.product }}</td>
+          <td>S/. {{ order.total }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

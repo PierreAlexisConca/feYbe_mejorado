@@ -1,0 +1,66 @@
+<div class="orders-container">
+
+  <div class="title-section">
+    <div>
+      <h2>Pedidos Agrícolas</h2>
+      <p>Gestión de ventas y pedidos de productos agrícolas</p>
+      <div *ngIf="mensaje" class="toast" [class.toast-error]="tipoMensaje === 'error'">{{ mensaje }}</div>
+    </div>
+    <div class="action-buttons">
+      <button class="add-btn" (click)="toggleForm()">
+        {{ showForm ? 'Cancelar' : '+ Registrar pedido' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <input
+      type="date"
+      [(ngModel)]="pedido.fecha"
+    />
+
+    <input
+      type="number"
+      placeholder="Total"
+      [(ngModel)]="pedido.total"
+    />
+
+    <button class="save-btn" (click)="guardarPedido()">
+      {{ editando ? 'Actualizar' : 'Guardar' }}
+    </button>
+
+  </div>
+
+  <div class="search-section">
+    <input
+      type="text"
+      placeholder="Buscar pedido por fecha o total..."
+      [(ngModel)]="searchText"
+    />
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Total</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of pedidosFiltrados()">
+        <td>{{ item.fecha }}</td>
+        <td>S/. {{ item.total }}</td>
+        <td>{{ item.state === 'A' ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <button class="edit-btn" (click)="editar(item)">Editar</button>
+          <button class="delete-btn" *ngIf="item.state === 'A'" (click)="eliminar(item)">Eliminar</button>
+          <button class="restore-btn" *ngIf="item.state !== 'A'" (click)="restaurar(item)">Restaurar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

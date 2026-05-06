@@ -1,0 +1,16 @@
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #e2e8f0;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+label {
+    color: #475569;
+    margin-bottom: 8px;
+}

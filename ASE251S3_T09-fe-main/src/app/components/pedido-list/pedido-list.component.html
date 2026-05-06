@@ -1,0 +1,33 @@
+<div class="card">
+  <h2 style="text-align:center">Listado de Pedidos</h2>
+  <table style="width:100%; text-align:center;">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Producto</th>
+        <th>Proveedor</th>
+        <th>Cantidad</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of pedidos">
+        <td>{{ p.id }}</td>
+        <td>{{ getClienteNombre(p.clienteId) }}</td>
+        <td>{{ getProductoNombre(p.productoId) }}</td>
+        <td>{{ getProveedorNombre(p.proveedorId) }}</td>
+        <td>{{ p.cantidad }}</td>
+        <td>{{ p.fecha }}</td>
+        <td>{{ p.estado ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <button (click)="seleccionarParaEditar(p)">Editar</button>
+          <button *ngIf="p.estado" (click)="eliminar(p.id!)">Eliminar</button>
+          <button *ngIf="!p.estado" (click)="restaurar(p.id!)">Restaurar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

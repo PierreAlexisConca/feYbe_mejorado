@@ -1,0 +1,65 @@
+<div class="suppliers-container">
+
+  <div class="title-section">
+    <div>
+      <h2>Proveedores</h2>
+      <p>Gestión de proveedores agrícolas</p>
+      <div *ngIf="mensaje" class="toast" [class.toast-error]="tipoMensaje === 'error'">{{ mensaje }}</div>
+    </div>
+    <div class="action-buttons">
+      <button class="add-btn" (click)="toggleForm()">
+        {{ showForm ? 'Cancelar' : '+ Agregar proveedor' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <input [(ngModel)]="newSupplier.ruc" placeholder="RUC">
+    <input [(ngModel)]="newSupplier.companyName" placeholder="Razón social">
+    <input [(ngModel)]="newSupplier.contactName" placeholder="Contacto">
+    <input [(ngModel)]="newSupplier.cellPhone" placeholder="Celular">
+    <input [(ngModel)]="newSupplier.address" placeholder="Dirección">
+
+    <button class="save-btn" (click)="guardar()">
+      {{ editando ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+
+  <div class="search-section">
+    <input
+      [(ngModel)]="searchText"
+      placeholder="Buscar por empresa, contacto o RUC..."
+    />
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>RUC</th>
+        <th>Empresa</th>
+        <th>Contacto</th>
+        <th>Celular</th>
+        <th>Dirección</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let supplier of filtrados">
+        <td>{{ supplier.ruc }}</td>
+        <td>{{ supplier.companyName }}</td>
+        <td>{{ supplier.contactName }}</td>
+        <td>{{ supplier.cellPhone }}</td>
+        <td>{{ supplier.address }}</td>
+        <td>{{ supplier.state === 'A' ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <button class="edit-btn" (click)="editar(supplier)">Editar</button>
+          <button class="delete-btn" *ngIf="supplier.state === 'A'" (click)="eliminar(supplier)">Eliminar</button>
+          <button class="restore-btn" *ngIf="supplier.state !== 'A'" (click)="restaurar(supplier)">Restaurar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
