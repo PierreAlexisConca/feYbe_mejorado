@@ -48,15 +48,69 @@
   border-radius: 16px;
   margin: 20px 0;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 15px;
 }
 
-input {
+input,
+select {
   padding: 12px;
   border: 1px solid #d7e6d7;
   border-radius: 10px;
   width: 100%;
+}
+
+.items-block {
+  grid-column: 1 / -1;
+  background: #f9fff9;
+  border: 1px solid #e2f0e2;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.items-header h4 {
+  margin: 0;
+  color: #1b5e20;
+}
+
+.item-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.mini-add-btn,
+.mini-remove-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+}
+
+.mini-add-btn {
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+}
+
+.mini-remove-btn {
+  background: linear-gradient(135deg, #d32f2f, #e53935);
+}
+
+.total-box {
+  grid-column: 1 / -1;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #e8f5e9;
+  color: #1b5e20;
 }
 
 .save-btn,
@@ -91,6 +145,46 @@ input {
   margin: 20px 0;
 }
 
+.search-with-filters {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-with-filters input {
+  flex: 1;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-buttons button {
+  padding: 10px 14px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  color: #666;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.filter-buttons button.active {
+  border-color: #2e7d32;
+  background: #2e7d32;
+  color: #fff;
+}
+
+.info-text {
+  margin: 10px 0 0 0;
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
 table {
   width: 100%;
   background: linear-gradient(135deg, #ffffff, #f8fff8);
@@ -107,4 +201,31 @@ td {
 
 tr:hover {
   background: #f7fff7;
+}
+
+.reciente {
+  background-color: #f0f8ff;
+  border-left: 4px solid #2196f3;
+}
+
+.normal-order {
+  background-color: #f7fff7;
+}
+
+.badge-recent {
+  background: #2196f3;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-normal-order {
+  background: #607d8b;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
 }

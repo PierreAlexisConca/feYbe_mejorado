@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -30,7 +31,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Optional<Cliente> findById(Long id) {
-        return clienteRepository.findById(id);
+        return clienteRepository.findById(Objects.requireNonNull(id, "id no puede ser null"));
     }
 
     @Override
@@ -46,7 +47,8 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente update(Cliente cliente) {
-        Cliente existing = clienteRepository.findById(cliente.getId())
+        Long clienteId = Objects.requireNonNull(cliente.getId(), "cliente.id no puede ser null");
+        Cliente existing = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente not found"));
 
         if (cliente.getApellido() == null || cliente.getApellido().isBlank()) {
@@ -60,7 +62,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente delete(Long id) {
-        Cliente cliente = clienteRepository.findById(id)
+        Cliente cliente = clienteRepository.findById(Objects.requireNonNull(id, "id no puede ser null"))
                 .orElseThrow(() -> new RuntimeException("Cliente not found"));
 
         cliente.setState("I");
@@ -69,7 +71,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente restore(Long id) {
-        Cliente cliente = clienteRepository.findById(id)
+        Cliente cliente = clienteRepository.findById(Objects.requireNonNull(id, "id no puede ser null"))
                 .orElseThrow(() -> new RuntimeException("Cliente not found"));
 
         cliente.setState("A");

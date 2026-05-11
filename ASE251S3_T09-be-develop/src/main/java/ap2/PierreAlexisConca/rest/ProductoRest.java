@@ -1,7 +1,9 @@
 package ap2.PierreAlexisConca.rest;
 
+import ap2.PierreAlexisConca.dto.producto.ProductoRequest;
 import ap2.PierreAlexisConca.model.Producto;
 import ap2.PierreAlexisConca.service.ProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,15 +38,16 @@ public class ProductoRest {
     }
 
     @PostMapping
-    public Producto createProducto(@RequestBody Producto producto) {
-        return productoService.save(producto);
+    public Producto createProducto(@Valid @RequestBody ProductoRequest productoRequest) {
+        return productoService.save(toProducto(productoRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto producto) {
+    public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @Valid @RequestBody ProductoRequest productoRequest) {
         if (!productoService.findById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
+        Producto producto = toProducto(productoRequest);
         producto.setId(id);
         return ResponseEntity.ok(productoService.update(producto));
     }
@@ -72,5 +75,16 @@ public class ProductoRest {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(productoService.restore(id));
+    }
+
+    private Producto toProducto(ProductoRequest request) {
+        Producto producto = new Producto();
+        producto.setNombre(request.getNombre());
+        producto.setDescripcion(request.getDescripcion());
+        producto.setPrecio(request.getPrecio());
+        producto.setCodigo(request.getCodigo());
+        producto.setStock(request.getStock());
+        producto.setState(request.getState());
+        return producto;
     }
 }

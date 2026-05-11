@@ -24,10 +24,36 @@
   </div>
 
   <div class="search-section">
-    <input
-      [(ngModel)]="searchText"
-      placeholder="Buscar por nombre, correo o número..."
-    />
+    <div class="search-with-filters">
+      <input
+        [(ngModel)]="searchText"
+        placeholder="Buscar por nombre, correo o número..."
+      />
+      <div class="filter-buttons">
+        <button 
+          [class.active]="filterType === 'todos'" 
+          (click)="filterType = 'todos'"
+        >
+          Todos
+        </button>
+        <button 
+          [class.active]="filterType === 'frecuentes'" 
+          (click)="filterType = 'frecuentes'"
+        >
+          👥 Frecuentes
+        </button>
+        <button 
+          [class.active]="filterType === 'normales'" 
+          (click)="filterType = 'normales'"
+        >
+          📊 Normales
+        </button>
+      </div>
+      <label class="toggle-inactive" [class.active]="showInactive">
+        <input type="checkbox" [(ngModel)]="showInactive" />
+        <span>Ver inactivos</span>
+      </label>
+    </div>
   </div>
 
   <table>
@@ -36,20 +62,28 @@
         <th>Nombre</th>
         <th>Correo</th>
         <th>Teléfono</th>
+        <th>Tipo</th>
         <th>Estado</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let customer of filtrados">
+      <tr *ngFor="let customer of filtrados" [class.frecuente]="clientesFrecuentes.includes(customer)" [class.activo]="esClienteActivo(customer)" [class.inactivo]="!esClienteActivo(customer)">
         <td>{{ customer.nombre }}</td>
         <td>{{ customer.email }}</td>
         <td>{{ customer.telefono }}</td>
-        <td>{{ customer.state === 'A' ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <span *ngIf="clientesFrecuentes.includes(customer)" class="badge-frecuente">⭐ Frecuente</span>
+          <span *ngIf="clientesNormales.includes(customer)" class="badge-normal">Regular</span>
+        </td>
+        <td>
+          <span *ngIf="esClienteActivo(customer)" class="badge-active">🟢 Activo</span>
+          <span *ngIf="!esClienteActivo(customer)" class="badge-inactive">🔴 Inactivo</span>
+        </td>
         <td>
           <button class="edit-btn" (click)="editar(customer)">Editar</button>
-          <button class="delete-btn" *ngIf="customer.state === 'A'" (click)="eliminar(customer)">Eliminar</button>
-          <button class="restore-btn" *ngIf="customer.state !== 'A'" (click)="restaurar(customer)">Restaurar</button>
+          <button class="delete-btn" *ngIf="esClienteActivo(customer)" (click)="eliminar(customer)">Eliminar</button>
+          <button class="restore-btn" *ngIf="!esClienteActivo(customer)" (click)="restaurar(customer)">Restaurar</button>
         </td>
       </tr>
     </tbody>

@@ -32,6 +32,12 @@
   cursor: pointer;
   transition: 0.3s ease;
   box-shadow: 0 16px 30px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.stat-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
 }
 
 .stat-card:nth-child(1) {
@@ -56,13 +62,14 @@
 }
 
 .stat-card h3 {
-  font-size: 15px;
-  margin-bottom: 12px;
+  font-size: 14px;
+  margin-bottom: 8px;
   opacity: 0.95;
+  font-weight: 600;
 }
 
 .stat-card h2 {
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 800;
   text-shadow: 0 3px 8px rgba(0,0,0,0.12);
 }
@@ -73,64 +80,40 @@
   padding: 28px;
   box-shadow: 0 14px 28px rgba(0,0,0,0.06);
 }
-.dashboard-container {
-  padding: 30px 40px;
+
+.recent-section h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-.dashboard-header {
-  background: linear-gradient(135deg, #1b5e20, #43a047, #66bb6a);
-  padding: 30px;
-  border-radius: 24px;
-  color: white;
-  margin-bottom: 30px;
-  box-shadow: 0 20px 40px rgba(46,125,50,0.18);
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #999;
 }
 
-.dashboard-header h2 {
-  font-size: 34px;
-  font-weight: 800;
-  text-shadow: 0 4px 10px rgba(0,0,0,0.15);
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
-  margin-bottom: 35px;
+th {
+  background: #f5f5f5;
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
 }
 
-.stat-card {
-  padding: 28px;
-  border-radius: 22px;
-  color: white;
-  transition: 0.3s;
-  cursor: pointer;
+td {
+  padding: 14px;
+  border-bottom: 1px solid #eee;
+  color: #555;
 }
 
-.stat-card:nth-child(1) {
-  background: linear-gradient(135deg, #43a047, #66bb6a);
-}
-
-.stat-card:nth-child(2) {
-  background: linear-gradient(135deg, #1565c0, #42a5f5);
-}
-
-.stat-card:nth-child(3) {
-  background: linear-gradient(135deg, #8e24aa, #ba68c8);
-}
-
-.stat-card:nth-child(4) {
-  background: linear-gradient(135deg, #ef6c00, #ffb74d);
-}
-
-.stat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 24px 40px rgba(0,0,0,0.12);
-}
-
-.recent-section {
-  background: white;
-  padding: 28px;
-  border-radius: 22px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+tr:hover {
+  background: #fafafa;
 }

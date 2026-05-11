@@ -1,10 +1,21 @@
+export interface DetallePedido {
+  productoId: number;
+  productoNombre?: string;
+  cantidad: number;
+  precioUnitario: number;
+  subtotal?: number;
+}
+
 export interface Pedido {
   id: number;
+  numero?: string;
   clienteId: number;
-  productoId: number;
-  proveedorId: number;
-  cantidad: number;
-  fecha: string; // LocalDate en backend, string ISO en frontend
-  estado: boolean;
+  clienteNombre?: string;
+  metodoPago: 'efectivo' | 'digital' | string;
+  detalle?: DetallePedido[];
+  cantidadItems?: number;
+  resumenProductos?: string;
+  fecha: string;
   total: number;
+  state?: 'A' | 'I';
 }

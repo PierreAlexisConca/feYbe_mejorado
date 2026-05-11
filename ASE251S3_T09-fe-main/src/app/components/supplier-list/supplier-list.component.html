@@ -26,10 +26,16 @@
   </div>
 
   <div class="search-section">
-    <input
-      [(ngModel)]="searchText"
-      placeholder="Buscar por empresa, contacto o RUC..."
-    />
+    <div class="search-with-toggle">
+      <input
+        [(ngModel)]="searchText"
+        placeholder="Buscar por empresa, contacto o RUC..."
+      />
+      <label class="toggle-inactive" [class.active]="showInactive">
+        <input type="checkbox" [(ngModel)]="showInactive" />
+        <span>Ver inactivos</span>
+      </label>
+    </div>
   </div>
 
   <table>
@@ -46,17 +52,20 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let supplier of filtrados">
+      <tr *ngFor="let supplier of filtrados" [class.activo]="esProveedorActivo(supplier)" [class.inactivo]="!esProveedorActivo(supplier)">
         <td>{{ supplier.ruc }}</td>
         <td>{{ supplier.companyName }}</td>
         <td>{{ supplier.contactName }}</td>
         <td>{{ supplier.cellPhone }}</td>
         <td>{{ supplier.address }}</td>
-        <td>{{ supplier.state === 'A' ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <span *ngIf="esProveedorActivo(supplier)" class="badge-active">🟢 Activo</span>
+          <span *ngIf="!esProveedorActivo(supplier)" class="badge-inactive">🔴 Inactivo</span>
+        </td>
         <td>
           <button class="edit-btn" (click)="editar(supplier)">Editar</button>
-          <button class="delete-btn" *ngIf="supplier.state === 'A'" (click)="eliminar(supplier)">Eliminar</button>
-          <button class="restore-btn" *ngIf="supplier.state !== 'A'" (click)="restaurar(supplier)">Restaurar</button>
+          <button class="delete-btn" *ngIf="esProveedorActivo(supplier)" (click)="eliminar(supplier)">Eliminar</button>
+          <button class="restore-btn" *ngIf="!esProveedorActivo(supplier)" (click)="restaurar(supplier)">Restaurar</button>
         </td>
       </tr>
     </tbody>

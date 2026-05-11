@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-producto-list',
+  selector: 'app-pedido-list',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './producto-list.component.html',
-  styleUrl: './producto-list.component.css'
+  templateUrl: './pedido-list.component.html',
+  styleUrl: './pedido-list.component.css'
 })
-export class ProductoListComponent {
+export class PedidoListComponent {
 
   searchText = '';
 

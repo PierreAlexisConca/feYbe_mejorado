@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,7 @@ public class ContactoServiceImpl implements ContactoService {
 
     @Override
     public Optional<Contacto> findById(Long id) {
-        return contactoRepository.findById(id);
+        return contactoRepository.findById(Objects.requireNonNull(id, "id no puede ser null"));
     }
 
     @Override
@@ -40,6 +41,6 @@ public class ContactoServiceImpl implements ContactoService {
 
     @Override
     public void delete(Long id) {
-        contactoRepository.deleteById(id);
+        contactoRepository.deleteById(Objects.requireNonNull(id, "id no puede ser null"));
     }
 }

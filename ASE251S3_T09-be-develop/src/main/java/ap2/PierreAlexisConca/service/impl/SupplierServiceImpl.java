@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -34,7 +35,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Optional<Supplier> findById(Long id) {
-        return supplierRepository.findById(id);
+        return supplierRepository.findById(Objects.requireNonNull(id, "id no puede ser null"));
     }
 
     @Override
@@ -46,7 +47,8 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier update(Supplier supplier) {
-        Supplier existing = supplierRepository.findById(supplier.getId())
+        Long supplierId = Objects.requireNonNull(supplier.getId(), "supplier.id no puede ser null");
+        Supplier existing = supplierRepository.findById(supplierId)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
         supplier.setCreatedAt(existing.getCreatedAt());
@@ -58,7 +60,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier delete(Long id) {
-        Supplier supplier = supplierRepository.findById(id)
+        Supplier supplier = supplierRepository.findById(Objects.requireNonNull(id, "id no puede ser null"))
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
         supplier.setState("I");
@@ -69,7 +71,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier restore(Long id) {
-        Supplier supplier = supplierRepository.findById(id)
+        Supplier supplier = supplierRepository.findById(Objects.requireNonNull(id, "id no puede ser null"))
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
         supplier.setState("A");

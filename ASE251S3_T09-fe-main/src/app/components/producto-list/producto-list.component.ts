@@ -14,6 +14,7 @@ export class ProductoListComponent implements OnInit {
 
   products: any[] = [];
   searchText = '';
+  showInactive = false;
   showForm = false;
   editando: any = null;
   mensaje = '';
@@ -22,7 +23,10 @@ export class ProductoListComponent implements OnInit {
   newProduct = {
     nombre: '',
     descripcion: '',
-    precio: 0
+    codigo: '',
+    precio: 0,
+    stock: 0,
+    state: 'A'
   };
 
   constructor(private productoService: ProductoService) {}
@@ -41,13 +45,20 @@ export class ProductoListComponent implements OnInit {
     this.showForm = !this.showForm;
     if (!this.showForm) {
       this.editando = null;
-      this.newProduct = { nombre: '', descripcion: '', precio: 0 };
+      this.newProduct = { nombre: '', descripcion: '', codigo: '', precio: 0, stock: 0, state: 'A' };
     }
   }
 
   editar(p: any) {
     this.editando = p;
-    this.newProduct = { nombre: p.nombre, descripcion: p.descripcion, precio: p.precio };
+    this.newProduct = {
+      nombre: p?.nombre || '',
+      descripcion: p?.descripcion || '',
+      codigo: p?.codigo || '',
+      precio: Number(p?.precio) || 0,
+      stock: Number(p?.stock) || 0,
+      state: (typeof p?.state === 'string' && p.state.toUpperCase() === 'I') ? 'I' : 'A'
+    };
     this.showForm = true;
   }
 
@@ -55,11 +66,24 @@ export class ProductoListComponent implements OnInit {
     const payload = {
       nombre: this.newProduct.nombre.trim(),
       descripcion: this.newProduct.descripcion.trim(),
-      precio: Number(this.newProduct.precio)
+      codigo: this.newProduct.codigo.trim(),
+      precio: Number(this.newProduct.precio),
+      stock: Number(this.newProduct.stock),
+      state: this.newProduct.state
     };
 
-    if (!payload.nombre || !payload.descripcion || Number.isNaN(payload.precio)) {
+    if (!payload.nombre || !payload.descripcion || !payload.codigo || Number.isNaN(payload.precio) || Number.isNaN(payload.stock)) {
       this.mostrarMensaje('Completa todos los campos del producto.', 'error');
+      return;
+    }
+
+    if (payload.stock < 0 || payload.precio <= 0) {
+      this.mostrarMensaje('Precio debe ser mayor a 0 y stock no puede ser negativo.', 'error');
+      return;
+    }
+
+    if (!['A', 'I'].includes(payload.state)) {
+      this.mostrarMensaje('El estado del producto debe ser A o I.', 'error');
       return;
     }
 
@@ -68,7 +92,7 @@ export class ProductoListComponent implements OnInit {
         next: () => {
           this.cargarProductos();
           this.editando = null;
-          this.newProduct = { nombre: '', descripcion: '', precio: 0 };
+          this.newProduct = { nombre: '', descripcion: '', codigo: '', precio: 0, stock: 0, state: 'A' };
           this.showForm = false;
           this.mostrarMensaje('Producto actualizado con exito.', 'ok');
         },
@@ -78,7 +102,7 @@ export class ProductoListComponent implements OnInit {
       this.productoService.crear(payload).subscribe({
         next: () => {
           this.cargarProductos();
-          this.newProduct = { nombre: '', descripcion: '', precio: 0 };
+          this.newProduct = { nombre: '', descripcion: '', codigo: '', precio: 0, stock: 0, state: 'A' };
           this.showForm = false;
           this.mostrarMensaje('Producto guardado con exito.', 'ok');
         },
@@ -100,7 +124,13 @@ export class ProductoListComponent implements OnInit {
   }
 
   eliminar(p: any) {
-    this.productoService.eliminar(p.id).subscribe({
+    const productId = this.obtenerIdProducto(p);
+    if (!productId) {
+      this.mostrarMensaje('No se encontró el ID del producto para inactivar.', 'error');
+      return;
+    }
+
+    this.productoService.eliminar(productId).subscribe({
       next: () => {
         this.cargarProductos();
         this.mostrarMensaje('Producto inactivado con exito.', 'ok');
@@ -110,7 +140,13 @@ export class ProductoListComponent implements OnInit {
   }
 
   restaurar(p: any) {
-    this.productoService.restaurar(p.id).subscribe({
+    const productId = this.obtenerIdProducto(p);
+    if (!productId) {
+      this.mostrarMensaje('No se encontró el ID del producto para restaurar.', 'error');
+      return;
+    }
+
+    this.productoService.restaurar(productId).subscribe({
       next: () => {
         this.cargarProductos();
         this.mostrarMensaje('Producto restaurado con exito.', 'ok');
@@ -119,9 +155,49 @@ export class ProductoListComponent implements OnInit {
     });
   }
 
+  getEstadoStock(stock: number): { estado: string; color: string } {
+    const s = stock || 0;
+    if (s >= 50) {
+      return { estado: 'ESTABLE', color: 'verde' };
+    } else if (s > 0 && s < 50) {
+      return { estado: 'POR AGOTARSE', color: 'amarillo' };
+    } else {
+      return { estado: 'AGOTADO', color: 'rojo' };
+    }
+  }
+
   get filtrados() {
-    return this.products.filter(p =>
-      p.nombre.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+    return this.products.filter(p => {
+      const estadoValido = this.showInactive ? true : this.esProductoActivo(p);
+      const textoValido = p.nombre?.toLowerCase().includes(this.searchText.toLowerCase());
+      return estadoValido && textoValido;
+    });
+  }
+
+  esProductoActivo(product: any): boolean {
+    if (typeof product?.estado === 'boolean') {
+      return product.estado;
+    }
+
+    if (typeof product?.state === 'boolean') {
+      return product.state;
+    }
+
+    if (typeof product?.state === 'string') {
+      return product.state.toUpperCase() === 'A';
+    }
+
+    return true;
+  }
+
+  private obtenerIdProducto(product: any): number | null {
+    const id = product?.id ?? product?.idProducto ?? product?.productoId;
+    if (typeof id === 'number') {
+      return id;
+    }
+    if (typeof id === 'string' && id.trim() !== '' && !Number.isNaN(Number(id))) {
+      return Number(id);
+    }
+    return null;
   }
 }

@@ -18,6 +18,7 @@ export class SupplierListComponent implements OnInit {
   editando: any = null;
   mensaje = '';
   tipoMensaje: 'ok' | 'error' = 'ok';
+  showInactive = false;
 
   newSupplier = {
     ruc: '',
@@ -90,23 +91,63 @@ export class SupplierListComponent implements OnInit {
   }
 
   eliminar(s: any) {
-    this.service.eliminar(s.id).subscribe(() => {
+    const supplierId = this.obtenerIdProveedor(s);
+    if (!supplierId) {
+      this.mostrarMensaje('No se encontró el ID del proveedor para inactivar.', 'error');
+      return;
+    }
+
+    this.service.eliminar(supplierId).subscribe(() => {
       this.cargar();
     });
   }
 
   restaurar(s: any) {
-    this.service.restaurar(s.id).subscribe(() => {
+    const supplierId = this.obtenerIdProveedor(s);
+    if (!supplierId) {
+      this.mostrarMensaje('No se encontró el ID del proveedor para restaurar.', 'error');
+      return;
+    }
+
+    this.service.restaurar(supplierId).subscribe(() => {
       this.cargar();
     });
   }
 
   get filtrados() {
-    return this.suppliers.filter(supplier =>
-      supplier.companyName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      supplier.contactName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      supplier.ruc?.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+    return this.suppliers.filter(supplier => {
+      // Filtrar por estado (activo/inactivo)
+      const estadoValido = this.showInactive ? true : this.esProveedorActivo(supplier);
+      
+      // Filtrar por búsqueda
+      const textoValido = 
+        supplier.companyName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        supplier.contactName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        supplier.ruc?.toLowerCase().includes(this.searchText.toLowerCase());
+      
+      return estadoValido && textoValido;
+    });
+  }
+
+  esProveedorActivo(supplier: any): boolean {
+    if (typeof supplier?.estado === 'boolean') {
+      return supplier.estado;
+    }
+
+    if (typeof supplier?.state === 'boolean') {
+      return supplier.state;
+    }
+
+    if (typeof supplier?.state === 'string') {
+      return supplier.state.toUpperCase() === 'A';
+    }
+
+    return true;
+  }
+
+  private obtenerIdProveedor(supplier: any): number | null {
+    const id = supplier?.id ?? supplier?.idSupplier ?? supplier?.supplierId;
+    return typeof id === 'number' ? id : null;
   }
 
   private mostrarMensaje(texto: string, tipo: 'ok' | 'error') {

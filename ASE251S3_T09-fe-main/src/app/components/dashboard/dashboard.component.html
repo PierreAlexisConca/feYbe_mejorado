@@ -10,28 +10,37 @@
       class="stat-card"
       *ngFor="let item of stats"
     >
+      <div class="stat-icon">{{ item.icon }}</div>
       <h3>{{ item.title }}</h3>
       <h2>{{ item.value }}</h2>
     </div>
   </div>
 
   <div class="recent-section">
-    <h3>Pedidos Recientes</h3>
+    <h3>Pedidos Recientes (últimos 3 días)</h3>
 
-    <table>
+    <div *ngIf="recentOrders.length === 0" class="no-data">
+      <p>No hay pedidos recientes</p>
+    </div>
+
+    <table *ngIf="recentOrders.length > 0">
       <thead>
         <tr>
           <th>Cliente</th>
           <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Fecha</th>
           <th>Total</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let order of recentOrders">
-          <td>{{ order.client }}</td>
-          <td>{{ order.product }}</td>
-          <td>S/. {{ order.total }}</td>
+          <td>{{ order.clienteNombre || order.clienteId }}</td>
+          <td>{{ order.resumenProductos || order.productoId }}</td>
+          <td>{{ order.cantidadItems ?? order.cantidad }}</td>
+          <td>{{ order.fecha | date: 'dd/MM/yyyy' }}</td>
+          <td>S/. {{ order.total | number: '1.2-2' }}</td>
         </tr>
       </tbody>
     </table>

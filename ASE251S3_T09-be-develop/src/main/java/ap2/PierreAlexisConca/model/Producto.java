@@ -1,6 +1,7 @@
 package ap2.PierreAlexisConca.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 @Entity
@@ -22,6 +23,10 @@ public class Producto {
 
     @Column(name = "codigo", nullable = false, unique = true)
     private String codigo;
+
+    @Min(value = 0, message = "El stock no puede ser negativo")
+    @Column(name = "stock", nullable = false)
+    private Integer stock = 100;
 
     @Column(name = "state", nullable = false)
     private String state;

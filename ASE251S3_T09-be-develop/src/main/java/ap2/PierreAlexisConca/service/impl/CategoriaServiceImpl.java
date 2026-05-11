@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public Optional<Categoria> findById(Long id) {
-        return categoriaRepository.findById(id);
+        return categoriaRepository.findById(Objects.requireNonNull(id, "id no puede ser null"));
     }
 
     @Override
@@ -40,6 +41,6 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public void delete(Long id) {
-        categoriaRepository.deleteById(id);
+        categoriaRepository.deleteById(Objects.requireNonNull(id, "id no puede ser null"));
     }
 }
