@@ -1,0 +1,79 @@
+<div class="products-container">
+
+  <div class="title-section">
+    <div>
+      <h2>Productos</h2>
+      <p>Gestión de inventario agrícola</p>
+      <div *ngIf="mensaje" class="toast" [class.toast-error]="tipoMensaje === 'error'">{{ mensaje }}</div>
+    </div>
+    <div class="action-buttons">
+      <button class="add-btn" (click)="toggleForm()">
+        {{ showForm ? 'Cancelar' : '+ Agregar producto' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <input [(ngModel)]="newProduct.nombre" placeholder="Nombre del producto" maxlength="20">
+    <input [(ngModel)]="newProduct.descripcion" placeholder="Descripción" maxlength="100">
+    <input [(ngModel)]="newProduct.codigo" placeholder="Código interno" readonly>
+    <input [(ngModel)]="newProduct.precio" type="number" placeholder="Precio">
+    <input [(ngModel)]="newProduct.stock" type="number" placeholder="Stock disponible">
+    <select [(ngModel)]="newProduct.state">
+      <option value="A">Activo</option>
+      <option value="I">Inactivo</option>
+    </select>
+
+    <button class="save-btn" (click)="guardar()">
+      {{ editando ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+
+  <div class="search-section">
+    <div class="search-with-toggle">
+      <input [(ngModel)]="searchText" placeholder="Buscar producto...">
+      <label class="toggle-inactive" [class.active]="showInactive">
+        <input type="checkbox" [(ngModel)]="showInactive" />
+        <span>Ver inactivos</span>
+      </label>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Código</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Estado Stock</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let product of filtrados" [class.activo]="esProductoActivo(product)" [class.inactivo]="!esProductoActivo(product)">
+        <td>{{ product.nombre }}</td>
+        <td>{{ product.codigo || '-' }}</td>
+        <td>{{ product.descripcion }}</td>
+        <td>S/. {{ product.precio }}</td>
+        <td>{{ product.stock ?? 0 }}</td>
+        <td>
+          <span [class]="'stock-' + getEstadoStock(product.stock).color">{{ getEstadoStock(product.stock).estado }}</span>
+        </td>
+        <td>
+          <span *ngIf="esProductoActivo(product)" class="badge-active">🟢 Activo</span>
+          <span *ngIf="!esProductoActivo(product)" class="badge-inactive">🔴 Inactivo</span>
+        </td>
+        <td>
+          <button class="edit-btn" (click)="editar(product)">Editar</button>
+          <button class="delete-btn" *ngIf="esProductoActivo(product)" (click)="eliminar(product)">Eliminar</button>
+          <button class="restore-btn" *ngIf="!esProductoActivo(product)" (click)="restaurar(product)">Restaurar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

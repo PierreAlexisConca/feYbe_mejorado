@@ -1,0 +1,16 @@
+/* Estilos globales del componente raíz */
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.menu {
+    margin-top: 10px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}

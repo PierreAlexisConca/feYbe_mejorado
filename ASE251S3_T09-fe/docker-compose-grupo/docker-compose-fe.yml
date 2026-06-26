@@ -1,0 +1,53 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# docker-compose-grupo — Frontend Angular
+# Sirve tanto para uso LOCAL como referencia para EC2
+#
+# Cada integrante cambia la imagen por la suya:
+#   image: TU_USUARIO_DOCKERHUB/proyectofrontend:latest
+# REQUISITO: el backend debe estar corriendo en my-network con el nombre
+#            de contenedor "springboot-backend" en el puerto 8086.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Levantar:   docker compose -f "RUTA_COMPLETA\docker-compose-fe.yml" up -d
+# Bajar:      docker compose -f "RUTA_COMPLETA\docker-compose-fe.yml" down
+# Ver logs:   docker logs angular-frontend -f
+# Acceso:     http://localhost ya sea 086 o 80 dependiendo de tu configuración
+
+services:
+  frontend:
+    image: concaflores/proyectofrontend:latest   # <-- cambia por tu usuario de DockerHub
+    container_name: angular-frontend
+    ports:
+      - "80:80"
+    environment:
+      # Nombre del contenedor del backend en tu red Docker local.
+      # Cambia según el nombre que usa cada uno:
+      #   Pierre/Massiel local : BACKEND_HOST=springboot-sqlserver
+      #   Joseph local         : BACKEND_HOST=joseph-backend
+      #   EC2 misma instancia  : BACKEND_HOST=springboot-backend
+      #   EC2 VPC separada     : usa docker-compose-fe-ec2.yml con la IP privada
+      - BACKEND_HOST=springboot-sqlserver
+    networks:
+      - my-network
+    restart: unless-stopped
+
+networks:
+  my-network:
+    external: true
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PASOS COMPLETOS PARA CORRER LOCAL:
+#
+# 1. Construir la imagen (desde ASE251S3_T09-fe-develop/ASE251S3_T09-fe-develop/):
+#    docker build -t concaflores/proyectofrontend:latest -f Dockerfile-grupo/Dockerfile .
+# 2. Asegúrate de que la red existe:
+#    docker network create my-network
+#
+# 3. Levanta primero el backend (desde ASE251S3_T09-be-develop/):
+#    docker compose -f docker-compose-grupo/docker-compose-be-local.yml up -d
+
+# 4. Levanta el frontend:
+#    docker compose -f "C:\...\ASE251S3_T09-fe-develop\docker-compose-grupo\docker-compose-fe.yml" up -d
+#
+# 5. Abre el navegador en: http://localhost

@@ -1,0 +1,26 @@
+server:
+  port: ${PORT:8086}  # Valor por defecto si PORT no está configurado
+  url: ${SERVER_URL:http://localhost:8086}  # Valor por defecto si SERVER_URL no está configurado
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200}  # Orígenes permitidos, separados por coma
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:sqlserver://localhost:1433;databaseName=agro_db;encrypt=true;trustServerCertificate=true}
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:Alexis123!}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      ddl-auto: update  # Puede ser 'create', 'update', 'validate' o 'none'
+    show-sql: false  # Puede true o false, para ver las consultas SQL en consola
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html # Ruta para acceder a Swagger UI: http://localhost:8086/swagger-ui.html

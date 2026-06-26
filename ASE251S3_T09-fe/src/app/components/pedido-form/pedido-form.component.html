@@ -1,0 +1,126 @@
+<div class="orders-container">
+
+  <div class="title-section">
+    <div>
+      <h2>Pedidos Agrícolas</h2>
+      <p>Gestión de ventas y pedidos de productos agrícolas</p>
+      <div *ngIf="mensaje" class="toast" [class.toast-error]="tipoMensaje === 'error'">{{ mensaje }}</div>
+    </div>
+    <div class="action-buttons">
+      <button class="add-btn" (click)="toggleForm()">
+        {{ showForm ? 'Cancelar' : '+ Registrar pedido' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <input type="date" [(ngModel)]="pedido.fecha" />
+
+    <select [(ngModel)]="pedido.clienteId">
+      <option [ngValue]="null">Seleccionar cliente</option>
+      <option *ngFor="let c of clientes" [ngValue]="c.id ?? c.idCliente ?? c.clienteId">
+        {{ c.nombre }}
+      </option>
+    </select>
+
+    <select [(ngModel)]="pedido.metodoPago">
+      <option value="efectivo">Efectivo</option>
+      <option value="digital">Digital</option>
+    </select>
+
+    <div class="items-block">
+      <div class="items-header">
+        <h4>Productos del pedido</h4>
+        <button type="button" class="mini-add-btn" (click)="agregarItem()">+ Agregar producto</button>
+      </div>
+
+      <div class="item-row" *ngFor="let item of pedido.items; let i = index">
+        <select [(ngModel)]="item.productoId" (ngModelChange)="onProductoChange(i)" required>
+          <option [ngValue]="null">Producto</option>
+          <option *ngFor="let p of productos" [ngValue]="p.id ?? p.idProducto ?? p.productoId">
+            {{ p.nombre }} (S/. {{ p.precio }})
+          </option>
+        </select>
+
+        <input
+          type="number"
+          min="1"
+          max="9999999"
+          placeholder="Cantidad"
+          [(ngModel)]="item.cantidad"
+          (ngModelChange)="onCantidadChange(i)"
+          required
+          title="Solo números, máximo 7 dígitos"
+        />
+
+        <input type="number" [ngModel]="item.precioUnitario" placeholder="Precio unitario" readonly />
+        <input type="number" [ngModel]="item.subtotal" placeholder="Subtotal" readonly />
+
+        <button type="button" class="mini-remove-btn" (click)="quitarItem(i)">Quitar</button>
+      </div>
+    </div>
+
+    <div class="total-box">
+      <strong>Total calculado: S/. {{ pedido.total | number: '1.2-2' }}</strong>
+    </div>
+
+    <button class="save-btn" (click)="guardarPedido()">
+      {{ editando ? 'Actualizar' : 'Guardar' }}
+    </button>
+
+  </div>
+
+  <div class="search-section">
+    <div class="search-with-filters">
+      <input
+        type="text"
+        placeholder="Buscar pedido por fecha, cliente, total o producto..."
+        [(ngModel)]="searchText"
+      />
+      <div class="filter-buttons">
+        <button [class.active]="filtroAntiguedad === 'todos'" (click)="filtroAntiguedad = 'todos'">Todos</button>
+        <button [class.active]="filtroAntiguedad === 'recientes'" (click)="filtroAntiguedad = 'recientes'">Recientes (Hoy/Ayer)</button>
+        <button [class.active]="filtroAntiguedad === 'normales'" (click)="filtroAntiguedad = 'normales'">Normales (>=2 días)</button>
+      </div>
+    </div>
+    <p class="info-text">Todos los pedidos se muestran por defecto.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Cliente</th>
+        <th>Productos</th>
+        <th>Cantidad</th>
+        <th>Método Pago</th>
+        <th>Total</th>
+        <th>Antigüedad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of pedidosFiltrados()" [class.reciente]="esPedidoReciente(item)" [class.normal-order]="!esPedidoReciente(item)">
+        <td>{{ item.fecha | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ obtenerNombreCliente(item) }}</td>
+        <td>{{ obtenerResumenProductos(item) }}</td>
+        <td>{{ obtenerCantidadItems(item) }}</td>
+        <td>{{ obtenerMetodoPago(item) }}</td>
+        <td>S/. {{ item.total | number: '1.2-2' }}</td>
+        <td>
+          <span class="badge-recent" *ngIf="esPedidoReciente(item)">{{ obtenerEtiquetaAntiguedad(item) }}</span>
+          <span class="badge-normal-order" *ngIf="!esPedidoReciente(item)">{{ obtenerEtiquetaAntiguedad(item) }}</span>
+        </td>
+        <td>{{ item.state === 'A' ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <button class="edit-btn" (click)="editar(item)">Editar</button>
+          <button class="delete-btn" *ngIf="item.state === 'A'" (click)="eliminar(item)">Eliminar</button>
+          <button class="restore-btn" *ngIf="item.state !== 'A'" (click)="restaurar(item)">Restaurar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

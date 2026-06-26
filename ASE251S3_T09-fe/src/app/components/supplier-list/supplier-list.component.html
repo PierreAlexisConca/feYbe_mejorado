@@ -1,0 +1,74 @@
+<div class="suppliers-container">
+
+  <div class="title-section">
+    <div>
+      <h2>Proveedores</h2>
+      <p>Gestión de proveedores agrícolas</p>
+      <div *ngIf="mensaje" class="toast" [class.toast-error]="tipoMensaje === 'error'">{{ mensaje }}</div>
+    </div>
+    <div class="action-buttons">
+      <button class="add-btn" (click)="toggleForm()">
+        {{ showForm ? 'Cancelar' : '+ Agregar proveedor' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <input [(ngModel)]="newSupplier.ruc" placeholder="RUC">
+    <input [(ngModel)]="newSupplier.companyName" placeholder="Empresa">
+    <input [(ngModel)]="newSupplier.contactName" placeholder="Contacto">
+    <input [(ngModel)]="newSupplier.cellPhone" placeholder="Celular">
+    <input [(ngModel)]="newSupplier.address" placeholder="Ubicacion">
+
+    <button class="save-btn" (click)="guardar()">
+      {{ editando ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+
+  <div class="search-section">
+    <div class="search-with-toggle">
+      <input
+        [(ngModel)]="searchText"
+        placeholder="Buscar por empresa, contacto o RUC..."
+      />
+      <label class="toggle-inactive" [class.active]="showInactive">
+        <input type="checkbox" [(ngModel)]="showInactive" />
+        <span>Ver inactivos</span>
+      </label>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>RUC</th>
+        <th>Empresa</th>
+        <th>Contacto</th>
+        <th>Celular</th>
+        <th>Ubicación</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let supplier of filtrados" [class.activo]="esProveedorActivo(supplier)" [class.inactivo]="!esProveedorActivo(supplier)">
+        <td>{{ supplier.ruc }}</td>
+        <td>{{ supplier.companyName }}</td>
+        <td>{{ supplier.contactName }}</td>
+        <td>{{ supplier.cellPhone }}</td>
+        <td>{{ supplier.address }}</td>
+        <td>
+          <span *ngIf="esProveedorActivo(supplier)" class="badge-active">🟢 Activo</span>
+          <span *ngIf="!esProveedorActivo(supplier)" class="badge-inactive">🔴 Inactivo</span>
+        </td>
+        <td>
+          <button class="edit-btn" (click)="editar(supplier)">Editar</button>
+          <button class="delete-btn" *ngIf="esProveedorActivo(supplier)" (click)="eliminar(supplier)">Eliminar</button>
+          <button class="restore-btn" *ngIf="!esProveedorActivo(supplier)" (click)="restaurar(supplier)">Restaurar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

@@ -1,0 +1,31 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# docker-compose-grupo — Frontend Angular para EC2 en VPC (instancias separadas)
+#
+# Arquitectura:
+#   EC2 Frontend  → corre este archivo
+#   EC2 Backend   → IP privada: 10.0.2.149 (puerto 8086)
+#   EC2 Database  → IP privada: 10.0.2.168 (solo el backend la necesita)
+#
+# ANTES DE LEVANTAR: reemplaza IP_PRIVADA_EC2_BACKEND
+# por la IP privada real de tu instancia EC2 del backend.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Levantar:   docker compose -f docker-compose-fe-ec2.yml up -d
+# Bajar:      docker compose -f docker-compose-fe-ec2.yml down
+# Ver logs:   docker logs angular-frontend -f
+# Acceso:     http://<IP_PUBLICA_EC2_FRONTEND>
+
+services:
+  frontend:
+    image: concaflores/proyectofrontend:latest
+    container_name: angular-frontend
+    ports:
+      - "80:80"
+    environment:
+      # ↓ Reemplaza por la IP PRIVADA de tu EC2 del backend
+      # Ejemplo: BACKEND_HOST=10.0.2.149
+      - BACKEND_HOST=IP_PRIVADA_EC2_BACKEND
+    restart: unless-stopped
+
+# No se necesita red Docker compartida porque el backend está en otra EC2.
+# Nginx hará proxy_pass a la IP privada directamente por la red de la VPC.

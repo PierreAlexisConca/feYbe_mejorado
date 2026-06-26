@@ -1,0 +1,36 @@
+<form (ngSubmit)="enviarDatos()">
+    <!-- CAMPO: NOMBRE COMERCIAL (companyName) -->
+
+    <div class="mb-3">
+        <label class="form-label small fw-bold text-uppercase text-primary">Nombre Comercial (Empresa)</label>
+        <input type="text" class="form-control form-control-lg border-2" name="companyName"
+            [(ngModel)]="nuevoProveedor.companyName" required placeholder="Ej: AgroPeru SAC"
+            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{1,20}$" maxlength="20"
+            title="Solo letras, máximo 20 caracteres">
+    </div>
+
+    <!-- CAMPO: RUC -->
+    <div class="mb-3">
+        <label class="form-label small fw-bold text-uppercase text-primary">RUC / Identificación</label>
+        <input type="text" class="form-control border-2" name="ruc" 
+            [(ngModel)]="nuevoProveedor.ruc" required placeholder="20XXXXXXXXX"
+            pattern="^[0-9]{11}$" maxlength="11"
+            title="Solo números, exactamente 11 dígitos">
+    </div>
+
+    <!-- CAMPO: ESTADO (state) -->
+    <div class="mb-3">
+        <label class="form-label small fw-bold text-uppercase text-primary">Estado</label>
+        <select class="form-select border-2" name="state" [(ngModel)]="nuevoProveedor.state">
+            <option value="A">✅ Activo</option>
+            <option value="I">❌ Inactivo</option>
+        </select>
+    </div>
+
+    <!-- BOTÓN DINÁMICO (CREAR / EDITAR) -->
+    <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary btn-lg shadow-sm fw-bold">
+            {{ nuevoProveedor.id ? '💾 Actualizar Cambios' : '➕ Registrar Proveedor' }}
+        </button>
+    </div>
+</form>

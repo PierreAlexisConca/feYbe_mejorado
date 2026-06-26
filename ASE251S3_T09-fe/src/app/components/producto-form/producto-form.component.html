@@ -1,0 +1,14 @@
+<div class="card">
+  <h2>{{ producto.id ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+
+  <form (ngSubmit)="guardar()">
+    <input type="text" [(ngModel)]="producto.nombre" name="nombre" placeholder="Nombre" required />
+    <input type="text" [(ngModel)]="producto.descripcion" name="descripcion" placeholder="Descripción" />
+    <input type="number" [(ngModel)]="producto.precio" name="precio" placeholder="Precio" required />
+
+    <div class="btn-group">
+      <button type="submit">{{ producto.id ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" (click)="limpiar()">Limpiar</button>
+    </div>
+  </form>
+</div>

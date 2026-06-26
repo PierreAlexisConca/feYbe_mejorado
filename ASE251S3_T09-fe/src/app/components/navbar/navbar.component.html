@@ -1,0 +1,28 @@
+<div class="main-container">
+
+  <div class="top-header">
+    <div>
+      <h2>AGRÍCOLA FLOREZA</h2>
+      <p>Sistema de Gestión Agrícola</p>
+    </div>
+
+    <div class="header-right">
+      <span class="user-info">
+        <span class="user-icon">👤</span>
+        {{ nombreUsuario }}
+      </span>
+      <button class="btn-logout" (click)="cerrarSesion()" title="Cerrar sesión">
+        🚪 Cerrar Sesión
+      </button>
+    </div>
+  </div>
+
+  <div class="menu-tabs">
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/productos" routerLinkActive="active">Productos</a>
+    <a routerLink="/clientes" routerLinkActive="active">Clientes</a>
+    <a routerLink="/proveedores" routerLinkActive="active">Proveedores</a>
+    <a routerLink="/pedidos" routerLinkActive="active">Pedidos</a>
+  </div>
+
+</div>
